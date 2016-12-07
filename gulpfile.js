@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
-	jslint = require('gulp-jslint'),
 	plugins = require('gulp-load-plugins')();
 
 var paths = {
@@ -36,12 +35,6 @@ var config = {
 	}
 }
 
-// gulp.task('lint:js', function () {
-//     return gulp.src(paths.scripts.lint)
-//         .pipe(jslint({ /* this object represents the JSLint directives being passed down */ }));
-// });
-
-
 // gulp.task('scripts:build', function() {
 // 	return gulp.src(paths.scripts.src)
 // 		.pipe(concat('js.min.js'))
@@ -55,6 +48,7 @@ function getTask(task) {
 }
 
 gulp.task('scripts-dev', getTask('scripts-dev'));
+gulp.task('scripts-lint', getTask('scripts-lint'));
 gulp.task('sass-dev', getTask('sass-dev'));
 gulp.task('sass-build', getTask('sass-build'));
 gulp.task('imgmin', getTask('imgmin'));
@@ -62,7 +56,7 @@ gulp.task('imgmin', getTask('imgmin'));
 
 gulp.task('watch', function () {
 	gulp.watch(paths.sass.src, ['sass-dev']);
-	gulp.watch(paths.scripts.src, ['scripts-dev']);
+	gulp.watch(paths.scripts.src, ['scripts-dev', 'scripts-lint']);
 });
 
 gulp.task('build', ['sass-build', 'imgmin']);
