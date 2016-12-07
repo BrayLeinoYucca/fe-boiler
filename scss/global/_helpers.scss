@@ -1,0 +1,136 @@
+/*========================================
+
+	Helper Styles
+	_____________
+
+========================================*/
+
+/*========================================
+
+	Margin Helpers
+
+========================================*/
+
+.mbn {
+	margin-bottom: 0;
+}
+
+.mb {
+	margin-bottom: ($gutter-width-percentage / 1.5);
+}
+
+.mb25 {
+    margin-bottom: 25px;
+}
+
+/*========================================
+
+	Animation Helpers
+
+========================================*/
+
+/*========================================
+
+	Example Usage
+	--------------------------------------
+
+	.shake {
+	    @include animation('shake 0.5s');
+	}
+
+========================================*/
+
+/*========================================
+
+	List Helpers
+
+========================================*/
+
+.block-list {
+    @include block-list;
+}
+
+.inline-list {
+    @include inline-list;
+}
+
+.styled-list {
+	margin-left: 20px;
+	margin-bottom: 1.5em;
+	li {
+		margin-bottom: .5em;
+		&:last-child {
+	        margin-bottom: 0;
+	    }
+	}
+}
+
+.scrollable-on-tablet {
+	@include breakpoint(tablet) {
+	    @include inner-scroll;
+	}
+}
+
+.scrollable-on-phablet {
+	@include breakpoint(phablet) {
+		@include inner-scroll;
+	}
+}
+
+/*========================================
+
+	Container Helpers
+
+========================================*/
+
+.same-height-children {
+	display: flex;
+	align-items: stretch;
+	@include breakpoint(phablet) {
+		display: block;
+	}
+}
+
+/*========================================
+
+	Position helpers
+
+========================================*/
+
+.hidden {
+	display: none;
+}
+
+.hidden-on-phablet {
+    @include breakpoint(phablet) {
+        display: none;
+    }
+}
+
+.shown-on-phablet {
+	display: none;
+	@include breakpoint(phablet) {
+        display: block;
+    }
+}
+
+.display-block {
+	display: block;
+}
+
+/*========================================
+
+	Text Helpers
+
+========================================*/
+
+.text-center {
+	text-align: center;
+}
+
+.text-hidden {
+	font-size: 0;
+    position: absolute;
+    color: transparent;
+    text-indent: -99999px;
+}

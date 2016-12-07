@@ -1,0 +1,63 @@
+/*========================================
+
+    Colour Styles
+    _____________
+
+========================================*/
+
+/*========================================
+
+    Normal Colours, Just in case
+
+========================================*/
+
+$white-default:  #fff;
+$black-default:  #000;
+
+/*========================================
+
+    Main Colours 
+
+========================================*/
+
+$primary:       #00aaad;
+$secondary:     #0072bc;
+$grey:          #333;
+$purple:        #ba1c89;
+$brown:         #aa6665;
+$red:           #ff0;
+$blue:          #0072bb;
+
+/*========================================
+
+    Colour Variations
+
+========================================*/
+
+$grey-variation-1: lighten($grey, 7%);     //#444444
+$grey-variation-2: lighten($grey, 20%);    //#666666
+$grey-variation-3: lighten($grey, 65%);    //#d8d8d9 
+$grey-variation-4: lighten($grey, 75%);    //#f1f1f2 
+
+/*========================================
+     
+    Colour Classes
+
+========================================*/
+
+// sass-lint:disable-block no-color-keywords
+
+$color-list: primary, secondary, grey, purple, brown, red, blue, grey-variation-1, grey-variation-2, grey-variation-3, grey-variation-4, white-default, black-default;
+$color-list-vars: $primary, $secondary, $grey, $purple, $brown, $red, $blue, $grey-variation-1, $grey-variation-2, $grey-variation-3, $grey-variation-4, $white-default, $black-default;
+
+// sass-lint:enable-block no-color-keywords
+
+
+@for $i from 1 through length($color-list) {
+    .bg-#{nth($color-list, $i)} {
+        background: nth($color-list-vars, $i);
+    }
+    .color-#{nth($color-list, $i)} {
+        color: nth($color-list-vars, $i);
+    }
+}

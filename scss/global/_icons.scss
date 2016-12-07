@@ -1,0 +1,33 @@
+/*========================================
+
+    Icon Styles
+    _____________
+
+========================================*/
+
+// sass-lint:disable-block no-duplicate-properties
+@font-face {
+    font-family: 'icons';
+    src:    url('../fonts/icons.eot');
+    src:    url('../fonts/icons.eot#iefix') format('embedded-opentype'),
+        	url('../fonts/icons.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+// sass-lint:enable-block no-duplicate-properties
+
+@mixin icon-font {
+    font-family: 'icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    font-smoothing: antialiased grayscale;
+}
+
+[class^='icon-'],
+[class*=' icon-'] {
+    @include icon-font;
+}

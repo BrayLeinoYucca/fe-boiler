@@ -1,0 +1,233 @@
+/*========================================
+
+	Grid Styles
+	_____________
+
+========================================*/
+
+/*========================================
+
+	Grid Basic Setup
+
+========================================*/
+
+
+$total-columns:		12;
+$column-width:		75;	//Width of your grid columns
+$gutter-width:		35;	//Width of your gutters
+
+$want-it-responsive:  YES;    //Do you want the site responsive? 	Answer YES / NO
+
+$max-width: ( ($total-columns * $column-width) + ( ($total-columns) * $gutter-width) );
+
+$column-width-percentage: (100% / $total-columns) * ( $column-width / ($column-width + $gutter-width) );
+
+$gutter-width-percentage: (100% / $max-width ) * $gutter-width;
+
+
+/*========================================
+
+	Container Setup
+
+========================================*/
+
+.container {
+	padding: 0 10px;
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: content-box;
+	max-width: $max-width + px;
+	@media (max-width: 1024) {
+		padding: 0 15px;
+	}
+}
+
+/*========================================
+
+	Setup Column and Offset Column
+	Float and Margins
+
+========================================*/
+
+.column,
+.columns {
+	float: left;
+	margin: 0 ($gutter-width-percentage / 2);
+	&.first {
+		margin-left: 0;
+	}
+	&.last {
+		margin-right: 0;
+	}
+}
+
+/*========================================
+
+	Clearfix and margin on Rows
+
+========================================*/
+
+.row {
+	&::before,
+	&::after {
+		content: '';
+		display: table;
+	}
+	&::after {
+		clear: both;
+	}
+}
+
+.negative-row {
+	position: relative;
+	margin-left: -($gutter-width-percentage / 2);
+	margin-right: -($gutter-width-percentage / 2);
+}
+
+/*========================================
+
+	Columns List
+
+========================================*/
+
+$columns-list: one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve;
+$offset-list: half, one, one-half, two, two-half, three, three-half, four, four-half, five, five-half, six, six-half, seven, seven-half, eight, eight-half, nine, nine-half, ten, ten-half, eleven, eleven-half, twelve, twelve-half,;
+
+/*========================================
+
+	Create Each Grid Column Percentage
+
+========================================*/
+
+@function grid-unit-width-percentage($columns) {
+	@return ($columns * $column-width-percentage) + (($columns - 1) * $gutter-width-percentage);
+}
+
+/*========================================
+
+	Standard Column Widths And Offsets
+
+========================================*/
+
+@for $i from 1 through $total-columns {
+	.#{nth($columns-list, $i)} {
+		&.columns {
+			width: grid-unit-width-percentage($i);
+		}
+	}
+}
+@for $i from 1 through ($total-columns * 2) - 1 {
+	.offset-by-#{ nth($offset-list, $i) } {
+		margin-left: grid-unit-width-percentage(($i * .5)) + ($gutter-width-percentage * 1.5);
+	}
+}
+
+/*========================================
+
+	Resonsive Column Widths And Offsets
+
+========================================*/
+
+@if $want-it-responsive == YES {
+	@media only screen and (max-width: 768px) {
+		@for $i from 1 through $total-columns {
+			.#{nth($columns-list, $i)}-tablet {
+				&.columns {
+					width: grid-unit-width-percentage($i);
+				}
+			}
+		}
+		.offset-by-none-tablet {
+			margin-left: $gutter-width-percentage / 2;
+			margin-right: $gutter-width-percentage / 2;
+		}
+	}
+	@media only screen and (max-width: 760px) {
+		.columns {
+			float: none;
+			display: block;
+			margin: 0 1.25% 5%;
+			&.first {
+				margin-left: 10px;
+			}
+			&.last {
+				margin-right: 10px;
+			}
+		}
+		@for $i from 1 through $total-columns {
+			.#{nth($columns-list, $i)} {
+				&.columns {
+					width: auto;
+				}
+			}
+		}
+		@for $i from 1 through 3 {
+			$phablet-col-width: 25% * $i;
+			.#{nth($columns-list, $i)}-phablet {
+				&.columns {
+					float: left;
+					margin: 0 (2.5% / 2) 2.5%;
+					width: $phablet-col-width - 2.5;
+					&.mbn {
+						margin-bottom: 0;
+					}
+				}
+			}
+		}
+	}
+	@media only screen and (max-width: 569px) {
+		@for $i from 1 through 3 {
+			.#{nth($columns-list, $i)}-phablet {
+				&.columns {
+					width: 97.25%;
+				}
+			}
+		}
+		@for $i from 1 through 2 {
+			$phablet-col-width: 50% * $i;
+			.#{nth($columns-list, $i)}-mobile {
+				.columns {
+					margin: 0 (2.5% / 2) 2.5%;
+					width: $phablet-col-width - 2.5;
+				}
+			}
+		}
+	}
+} @else if $want-it-responsive == NO {
+	.container {
+		width: $max-width + px;
+	}
+}
+
+/*========================================
+
+	Resonsive Mixin For Responsive 
+	Styles Within The Normal Classes.
+
+========================================*/
+
+@mixin breakpoint($point) {
+	@if $point == large-desktop {
+		@media (min-width: 1400px) { @content ; }
+	} @else if $point == desktop {
+		@media (max-width: 1200px) { @content ; }
+	} @else if $point == small-desktop {
+		@media (max-width: 1024px) { @content ; }
+	} @else if $point == small-desktop-up {
+		@media (min-width: 1024px) { @content ; }
+	} @else if $point == tablet {
+		@media (max-width: 768px)  { @content ; }
+	} @else if $point == tablet-up {
+		@media (min-width: 761px) { @content ; }
+	} @else if $point == phablet {
+		@media (max-width: 760px) { @content ; }
+	} @else if $point == large-mobile {
+		@media (max-width: 569px)  { @content ; }
+	} @else if $point == mobile {
+		@media (max-width: 414px)  { @content ; }
+	} @else if $point == small-mobile {
+		@media (max-width: 320px)  { @content ; }
+	} @else {
+		@media (max-width: $point) { @content ; }
+	}
+}

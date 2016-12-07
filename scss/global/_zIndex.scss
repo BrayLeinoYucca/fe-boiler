@@ -1,0 +1,53 @@
+/*========================================
+
+    Z-Index Styles
+    _________________
+
+    This File Is For Setting All Of
+    The Base Z-Index Values For A More
+	Modular & Reusable Approach.
+	
+========================================*/
+
+
+$z-index-layers: (
+	bottomless-pit:				-9999,
+	below:						-1,
+	default:					1,
+	internal-overlay: 			10,
+	internal-overlay-content: 	20,
+	footer:						800,
+	header:						1000,
+	tooltips: 					1250,
+	dropdown: 					1500,
+	overlay:					2000,
+	modal: 						3000,
+	the-godfather: 				9999,
+);
+
+@function z($layer) {
+
+	@if not map-has-key($z-index-layers, $layer) {
+		@warn 'WHOOPS! we didnt find `#{$layer}` in the $z-index-layers map, try again :)';
+	}
+
+	@return map-get($z-index-layers, $layer);
+
+}
+
+/*========================================
+
+	Example Usage
+	--------------------------------------
+
+	.className {
+		z-index: z(modal);
+	}
+
+	Will Output:
+
+	.className {
+		z-index: 3000;
+	}
+
+========================================*/
