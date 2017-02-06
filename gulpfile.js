@@ -8,8 +8,9 @@ var gulp = require('gulp'),
 			lint: ['./js/src/components/*.js', './js/src/*.js'],
 		},
 		sass: {
-			src: './scss/**/*.scss',
-			dist: './css'
+			src: ['./scss/**/*.scss', '!./scss/amp.scss'],
+			dist: './css',
+			ampsrc: '.scss/amp.scss'
 		},
 		css: {
 			src: './css/style.css',
@@ -43,12 +44,15 @@ gulp.task('scripts-build', getTask('scripts-build'));
 gulp.task('scripts-lint', getTask('scripts-lint'));
 gulp.task('sass-dev', getTask('sass-dev'));
 gulp.task('sass-build', getTask('sass-build'));
+gulp.task('amp-css', getTask('amp-css'));
+gulp.task('amp-build', getTask('amp-build'));
 gulp.task('imgmin', getTask('imgmin'));
 
+gulp.task('amp', ['amp-css', 'amp-build']);
 
 gulp.task('watch', function () {
 	gulp.watch(paths.sass.src, ['sass-dev']);
-	gulp.watch(paths.scripts.src, ['scripts-dev', 'scripts-lint']);
+	gulp.watch(paths.scripts.src, ['scripts-dev']);
 });
 
-gulp.task('build', ['sass-build', 'scripts-build', 'imgmin']);
+gulp.task('build', ['sass-build', 'scripts-build', 'imgmin', 'amp-css']);

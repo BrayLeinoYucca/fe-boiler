@@ -6,7 +6,7 @@ var cleanCSS = require('gulp-clean-css'),
 	
 module.exports = function (config, paths, gulp, plugins) {
 	return function () {
-		gulp.src(paths.sass.src)
+		gulp.src(paths.sass.ampsrc)
 		.pipe(sass())
 		.pipe(autoprefixer(config.autoprefixer))
 		.pipe(csscomb())

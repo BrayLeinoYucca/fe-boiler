@@ -6,6 +6,7 @@
 ========================================*/
 
 // sass-lint:disable-block no-duplicate-properties
+
 @font-face {
     font-family: 'icons';
     src:    url('../fonts/icons.eot');
@@ -14,6 +15,7 @@
     font-weight: normal;
     font-style: normal;
 }
+
 // sass-lint:enable-block no-duplicate-properties
 
 @mixin icon-font {

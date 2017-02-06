@@ -65,16 +65,14 @@
 	}
 }
 
-.scrollable-on-tablet {
-	@include breakpoint(tablet) {
-	    @include inner-scroll;
-	}
-}
-
 .scrollable-on-phablet {
 	@include breakpoint(phablet) {
 		@include inner-scroll;
 	}
+}
+
+.overflow-scroll {
+	@include inner-scroll;
 }
 
 /*========================================
@@ -104,13 +102,6 @@
 .hidden-on-phablet {
     @include breakpoint(phablet) {
         display: none;
-    }
-}
-
-.shown-on-phablet {
-	display: none;
-	@include breakpoint(phablet) {
-        display: block;
     }
 }
 

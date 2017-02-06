@@ -7,32 +7,32 @@
 
 /*========================================
 
-	Cross Browser Opacity
+    Cross Browser Opacity
 
 ========================================*/
 
 // sass-lint:disable-block no-vendor-prefixes
 
 @mixin opacity($trans) {
-	filter: alpha(opactiy=($trans * 100));
-	-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$trans * 100})';
-	-moz-opacity: $trans;
-	-khtml-opacity: $trans;
-	opacity: $trans;
+    filter: alpha(opactiy=($trans * 100));
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$trans * 100})';
+    -moz-opacity: $trans;
+    -khtml-opacity: $trans;
+    opacity: $trans;
 }
 
 // sass-lint:enable-block no-vendor-prefixes
 
 /*========================================
 
-	REM Cross Browser Font Size 
-	Calculator
+    REM Cross Browser Font Size 
+    Calculator
 
 ========================================*/
 
 @mixin font-size($size-value: 1.6) {
-	font-size: ($size-value * 1) + px;
-	font-size: ($size-value / 10) + rem;
+    font-size: ($size-value * 1) + px;
+    font-size: ($size-value / 10) + rem;
 }
 
 /*========================================
@@ -89,11 +89,12 @@
 }
 
 @mixin inline-list {
+    font-size: 0;
     margin-left: 0;
     list-style: none;
     & > li {
-        float: left;
         margin-bottom: 0;
+        display: inline-block;
     }
 }
 
@@ -213,7 +214,10 @@
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-    -webkit-overflow-scrolling: touch;// sass-lint:disable-line no-misspelled-properties
+    // sass-lint:disable-block no-misspelled-properties
+    // causes lint error due to non-standard property
+    -webkit-overflow-scrolling: touch;
+    // sass-lint:enable-block no-misspelled-properties
     & > li {
         float: none;
         white-space: normal;
@@ -251,9 +255,9 @@
 ========================================*/
 
 @mixin rf($break, $size) {
-  @for $i from 1 through length($break) {
-    @include breakpoint(nth($break, $i)) {
-      @include font-size(nth($size, $i))
+    @for $i from 1 through length($break) {
+        @include breakpoint(nth($break, $i)) {
+            @include font-size(nth($size, $i))
+        }
     }
-  }
 }
