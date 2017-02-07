@@ -11,7 +11,6 @@
 
 ========================================*/
 
-
 $total-columns:		12;
 $column-width:		75;	//Width of your grid columns
 $gutter-width:		35;	//Width of your gutters
@@ -27,6 +26,9 @@ $column-width-percentage: (100% / $total-columns) * ( $column-width / ($column-w
 
 $gutter-width-percentage: (100% / $max-width ) * $gutter-width;
 
+@if $mobile-first == YES {
+	$width-style: 'min-width';
+}
 
 /*========================================
 
@@ -40,7 +42,7 @@ $gutter-width-percentage: (100% / $max-width ) * $gutter-width;
 	margin-right: auto;
 	box-sizing: content-box;
 	max-width: $max-width + px;
-	@media (max-width: 1024) {
+	@media (max-width: 1024px) {
 		padding: 0 15px;
 	}
 }
@@ -52,15 +54,46 @@ $gutter-width-percentage: (100% / $max-width ) * $gutter-width;
 
 ========================================*/
 
-.column,
-.columns {
-	float: left;
-	margin: 0 ($gutter-width-percentage / 2);
-	&.first {
-		margin-left: 0;
+@mixin inline-columns {
+	.column,
+	.columns {
+		float: left;
+		margin: 0 ($gutter-width-percentage / 2);
+		&.first {
+			margin-left: 0;
+		}
+		&.last {
+			margin-right: 0;
+		}
 	}
-	&.last {
-		margin-right: 0;
+}
+
+@mixin block-columns {
+	.columns {
+		float: none;
+		display: block;
+		margin: 0 1.25% 5%;
+		&.first {
+			margin-left: 10px;
+		}
+		&.last {
+			margin-right: 10px;
+		}
+	}
+	@for $i from 1 through $total-columns {
+		.#{nth($columns-list, $i)} {
+			&.columns {
+				width: auto;
+			}
+		}
+	}
+}
+
+@mixin responsive-column-widths($col-width) {
+	&.columns {
+		float: left;
+		margin: 0 (2.5% / 2) 2.5%;
+		width: $col-width - 2.5;
 	}
 }
 
@@ -112,95 +145,121 @@ $offset-list: half, one, one-half, two, two-half, three, three-half, four, four-
 
 ========================================*/
 
-@for $i from 1 through $total-columns {
-	.#{nth($columns-list, $i)} {
-		&.columns {
-			width: grid-unit-width-percentage($i);
+@mixin desktop-columns {
+	@for $i from 1 through $total-columns {
+		.#{nth($columns-list, $i)} {
+			&.columns {
+				width: grid-unit-width-percentage($i);
+			}
 		}
 	}
-}
-@for $i from 1 through ($total-columns * 2) - 1 {
-	.offset-by-#{ nth($offset-list, $i) } {
-		margin-left: grid-unit-width-percentage(($i * .5)) + ($gutter-width-percentage * 1.5);
+	@for $i from 1 through ($total-columns * 2) - 1 {
+		.offset-by-#{ nth($offset-list, $i) } {
+			margin-left: grid-unit-width-percentage(($i * .5)) + ($gutter-width-percentage * 1.5);
+		}
 	}
 }
 
 /*========================================
 
-	Resonsive Column Widths And Offsets
+	Tablet Columns
 
 ========================================*/
 
-@if $mobile-first == YES {
-	$width-style: 'min-width';
+@mixin tablet-columns {
+	@for $i from 1 through $total-columns {
+		.#{nth($columns-list, $i)}-tablet {
+			&.columns {
+				width: grid-unit-width-percentage($i);
+			}
+		}
+	}
+	.offset-by-none-tablet {
+		margin-left: $gutter-width-percentage / 2;
+		margin-right: $gutter-width-percentage / 2;
+	}
 }
 
+/*========================================
+
+	Phablet Columns
+
+========================================*/
+
+@mixin phablet-columns {
+	@for $i from 1 through 3 {
+		$phablet-col-width: 25% * $i;
+		.#{nth($columns-list, $i)}-phablet {
+			@include responsive-column-widths($phablet-col-width);
+		}
+	}
+}
+
+/*========================================
+
+	Mobile Columns
+
+========================================*/
+
+@mixin mobile-columns {
+	@for $i from 1 through 3 {
+		.#{nth($columns-list, $i)}-phablet {
+			&.columns {
+				width: 97.25%;
+			}
+		}
+	}
+	@for $i from 1 through 2 {
+		$phablet-col-width: 50% * $i;
+		.#{nth($columns-list, $i)}-mobile {
+			@include responsive-column-widths($phablet-col-width);
+		}
+	}
+}
+
+/*========================================
+
+	Set Up Grid
+
+========================================*/
+
 @if $want-it-responsive == YES {
-	@media only screen and ($width-style: 768px) {
-		@for $i from 1 through $total-columns {
-			.#{nth($columns-list, $i)}-tablet {
-				&.columns {
-					width: grid-unit-width-percentage($i);
-				}
-			}
+	@if $mobile-first == NO {
+		@include inline-columns;
+		@include desktop-columns;
+		@media only screen and (max-width: 768px) {
+			@include tablet-columns;
 		}
-		.offset-by-none-tablet {
-			margin-left: $gutter-width-percentage / 2;
-			margin-right: $gutter-width-percentage / 2;
+		@media only screen and (max-width: 760px) {
+			@include block-columns;
+			@include phablet-columns;
 		}
-	}
-	@media only screen and ($width-style: 760px) {
-		.columns {
-			float: none;
-			display: block;
-			margin: 0 1.25% 5%;
-			&.first {
-				margin-left: 10px;
-			}
-			&.last {
-				margin-right: 10px;
-			}
+		@media only screen and (max-width: 569px) {
+			@include mobile-columns;
 		}
-		@for $i from 1 through $total-columns {
-			.#{nth($columns-list, $i)} {
-				&.columns {
-					width: auto;
-				}
-			}
+	} @else {
+		@include block-columns;
+		@include mobile-columns;
+		@media only screen and (min-width: 569px) {
+			@include phablet-columns;
 		}
-		@for $i from 1 through 3 {
-			$phablet-col-width: 25% * $i;
-			.#{nth($columns-list, $i)}-phablet {
-				&.columns {
-					float: left;
-					margin: 0 (2.5% / 2) 2.5%;
-					width: $phablet-col-width - 2.5;
-					&.mbn {
-						margin-bottom: 0;
-					}
-				}
-			}
+		@media only screen and (min-width: 760px) {
+			@include tablet-columns;
+		}
+		@media only screen and (min-width: 768px) {
+			@include inline-columns;
+			@include desktop-columns;
 		}
 	}
-	@media only screen and ($width-style: 569px) {
-		@for $i from 1 through 3 {
-			.#{nth($columns-list, $i)}-phablet {
-				&.columns {
-					width: 97.25%;
-				}
-			}
-		}
-		@for $i from 1 through 2 {
-			$phablet-col-width: 50% * $i;
-			.#{nth($columns-list, $i)}-mobile {
-				.columns {
-					margin: 0 (2.5% / 2) 2.5%;
-					width: $phablet-col-width - 2.5;
-				}
-			}
-		}
-	}
-} @else if $want-it-responsive == NO {
+}
+
+/*========================================
+
+	Fixed Width / Not Responsive
+
+========================================*/
+
+@if $want-it-responsive == NO {
 	.container {
 		width: $max-width + px;
 	}
